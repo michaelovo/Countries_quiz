@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flip_card/flip_card.dart';
 
 class Country extends StatelessWidget {
   final Map country;
@@ -25,14 +26,60 @@ class Country extends StatelessWidget {
         child: GridView(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           children: <Widget>[
-            CountryCard(title: 'Capital'),
-            CountryCard(title: 'Population'),
-            CountryCard(title: 'Flag'),
-            CountryCard(title: 'Currency'),
-            CountryCard(title: 'Show on map'),
-
+            FlipCard(
+              direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Capital'),
+                back: CountryDetailCard(title: country['capital'],)
+            ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Population'),
+                back: CountryDetailCard(title: country['population'].toString(),)
+            ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Flag'),
+                back: CountryDetailCard(title: 'Hello',)
+            ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Currency'),
+                back: CountryDetailCard(title: country['currency'],)
+            ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Show on map'),
+                back: CountryDetailCard(title: 'Hello',)
+            ),
           ],
 
+        ),
+      ),
+    );
+  }
+}
+
+class CountryDetailCard extends StatelessWidget {
+  final String title;
+  const CountryDetailCard({
+    Key key,
+    this.title
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.deepOrange,
+      elevation: 10,
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.bold
+          ),
         ),
       ),
     );
