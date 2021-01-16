@@ -3,10 +3,18 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:country_house/screens/Country.dart';
+import 'package:dio/dio.dart';
 
 class AllCountries extends StatelessWidget {
+
+  void getCountries()async{
+    var response = await Dio().get("https://restcountries.eu/rest/v2/all");
+    print(response.data.length);
+  }
   @override
   Widget build(BuildContext context) {
+    getCountries();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
@@ -28,7 +36,7 @@ class AllCountries extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Country(),
+                  builder: (context) => Country("Nigeria"),
                 ),
               );
             },
@@ -44,7 +52,7 @@ class AllCountries extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => Country(),
+                  builder: (context) => Country("England"),
                 ),
               );
             },
