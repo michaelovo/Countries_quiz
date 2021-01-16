@@ -5,15 +5,30 @@ import 'package:flutter/painting.dart';
 import 'package:country_house/screens/Country.dart';
 import 'package:dio/dio.dart';
 
-class AllCountries extends StatelessWidget {
+class AllCountries extends StatefulWidget {
 
-  void getCountries()async{
+  @override
+  _AllCountriesState createState() => _AllCountriesState();
+}
+
+class _AllCountriesState extends State<AllCountries> {
+  Future<List> countries;
+  Future<List> getCountries()async{
     var response = await Dio().get("https://restcountries.eu/rest/v2/all");
-    print(response.data.length);
+    // print(response.data.length);
+    return response.data;
+
   }
+
+  @override
+  void initState() {
+    countries = getCountries();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    getCountries();
+    print(countries);
 
     return Scaffold(
       appBar: AppBar(
@@ -31,40 +46,69 @@ class AllCountries extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.all(10),
-        child: ListView(children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Country("Nigeria"),
-                ),
-              );
-            },
-            child: Card(
-                elevation: 10,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
-                  child: Text('Nigeria'),
-                )
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Country("England"),
-                ),
-              );
-            },
-            child: Card(
-                elevation: 10,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
-                  child: Text('England'),
-                )
-            ),
-          ),
-        ],),
+        child: FutureBuilder<List>(
+          future : countries,
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot){
+            if(snapshot.hasData){
+              // print(snapshot.data);
+              return ListView.builder(
+                itemBuilder: (BuildContext context, int index){
+                  return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Country(snapshot.data[index]),
+                              ),
+                            );
+                          },
+                          child: Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
+                                child: Text(snapshot.data[index]["name"]),
+                              )
+                          ),
+                        );
+
+              });
+            }
+            return null;
+          },
+        ),
+        // ListView(children: <Widget>[
+        //   GestureDetector(
+        //     onTap: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute(
+        //           builder: (context) => Country("Nigeria"),
+        //         ),
+        //       );
+        //     },
+        //     child: Card(
+        //         elevation: 10,
+        //         child: Padding(
+        //           padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
+        //           child: Text('Nigeria'),
+        //         )
+        //     ),
+        //   ),
+        //   GestureDetector(
+        //     onTap: () {
+        //       Navigator.of(context).push(
+        //         MaterialPageRoute(
+        //           builder: (context) => Country("England"),
+        //         ),
+        //       );
+        //     },
+        //     child: Card(
+        //         elevation: 10,
+        //         child: Padding(
+        //           padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
+        //           child: Text('England'),
+        //         )
+        //     ),
+        //   ),
+        // ],),
       ),
     );
   }

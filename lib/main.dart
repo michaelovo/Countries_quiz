@@ -3,7 +3,7 @@ import 'package:country_house/screens/AllCountries.dart';
 
 void main() {
   runApp(new MaterialApp(
-    home: AllCountries(),
+    home: new AllCountries(),
   ));
 }
 
