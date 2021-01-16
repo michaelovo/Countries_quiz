@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Country extends StatelessWidget {
   final Map country;
@@ -29,27 +31,63 @@ class Country extends StatelessWidget {
             FlipCard(
               direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Capital'),
-                back: CountryDetailCard(title: country['capital'],)
+                back: CountryDetailCard(title: country['capital'],
+                  color:Colors.deepOrange,
+                )
             ),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Population'),
-                back: CountryDetailCard(title: country['population'].toString(),)
+                back: CountryDetailCard(title: country['population'].toString(),
+                  color:Colors.deepPurple,)
             ),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
-                front: CountryCard(title: 'Flag'),
-                back: CountryDetailCard(title: 'Hello',)
+                front: CountryCard(title: 'Calling Code'),
+                back: CountryDetailCard(title: country['callingCodes'].toString(),
+                  color: Colors.green,
+                ),
             ),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Currency'),
-                back: CountryDetailCard(title: country['currency'],)
+                back: CountryDetailCard(title: country['currencies'][0]['name'],
+                  color:Colors.blue,
+                )
             ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Region'),
+                back: CountryDetailCard(title: country['region'],
+                  color:Colors.red,
+                )
+            ),
+            FlipCard(
+                direction: FlipDirection.VERTICAL,
+                front: CountryCard(title: 'Sub Region'),
+                back: CountryDetailCard(title: country['subregion'],
+                  color:Colors.cyan,
+                )
+            ),
+
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Show on map'),
                 back: CountryDetailCard(title: 'Hello',)
+            ),
+            FlipCard(
+              direction: FlipDirection.VERTICAL,
+              front: CountryCard(title: 'Flag'),
+              back:Card(
+                color: Colors.white,
+                elevation: 10,
+                child: Center(
+                    // child: SvgPicture.network(
+                    //     country['flag'],
+                    //     width: 100,
+                    // ),
+                ),
+              ),
             ),
           ],
 
@@ -61,15 +99,17 @@ class Country extends StatelessWidget {
 
 class CountryDetailCard extends StatelessWidget {
   final String title;
+  final MaterialColor color;
   const CountryDetailCard({
     Key key,
-    this.title
+    this.title,
+    this.color
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.deepOrange,
+      color: color,
       elevation: 10,
       child: Center(
         child: Text(

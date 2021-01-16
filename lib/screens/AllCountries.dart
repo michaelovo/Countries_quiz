@@ -28,7 +28,7 @@ class _AllCountriesState extends State<AllCountries> {
 
   @override
   Widget build(BuildContext context) {
-    print(countries);
+    // print(countries);
 
     return Scaffold(
       appBar: AppBar(
@@ -75,40 +75,6 @@ class _AllCountriesState extends State<AllCountries> {
             return null;
           },
         ),
-        // ListView(children: <Widget>[
-        //   GestureDetector(
-        //     onTap: () {
-        //       Navigator.of(context).push(
-        //         MaterialPageRoute(
-        //           builder: (context) => Country("Nigeria"),
-        //         ),
-        //       );
-        //     },
-        //     child: Card(
-        //         elevation: 10,
-        //         child: Padding(
-        //           padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
-        //           child: Text('Nigeria'),
-        //         )
-        //     ),
-        //   ),
-        //   GestureDetector(
-        //     onTap: () {
-        //       Navigator.of(context).push(
-        //         MaterialPageRoute(
-        //           builder: (context) => Country("England"),
-        //         ),
-        //       );
-        //     },
-        //     child: Card(
-        //         elevation: 10,
-        //         child: Padding(
-        //           padding: const EdgeInsets.symmetric(vertical:10.0, horizontal: 8.0),
-        //           child: Text('England'),
-        //         )
-        //     ),
-        //   ),
-        // ],),
       ),
     );
   }
