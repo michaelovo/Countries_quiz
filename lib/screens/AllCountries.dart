@@ -12,6 +12,7 @@ class AllCountries extends StatefulWidget {
 
 class _AllCountriesState extends State<AllCountries> {
   List countries =[];
+  List filteredCountries =[];
   bool isSearching = false;
 
   getCountries() async {
@@ -24,14 +25,16 @@ class _AllCountriesState extends State<AllCountries> {
   void initState() {
     getCountries().then((data){
       setState(() {
-        countries = data;
+        countries = filteredCountries = data;
       });
     });
     super.initState();
   }
 
   void _filterCountries(value){
-    print(value);
+    setState(() {
+      filteredCountries = countries.where((country) => country['name'].toLowerCase().contains(value.toLowerCase())).toList();
+    });
   }
 
   @override
@@ -74,6 +77,7 @@ class _AllCountriesState extends State<AllCountries> {
               onPressed: () {
                 setState(() {
                   this.isSearching = false;
+                  filteredCountries = countries;
                 });
               }):
           IconButton(
@@ -88,14 +92,14 @@ class _AllCountriesState extends State<AllCountries> {
       ),
       body: Container(
         padding: EdgeInsets.all(10),
-        child: countries.length > 0 ? ListView.builder(
-          itemCount: countries.length,
+        child: filteredCountries.length > 0 ? ListView.builder(
+          itemCount: filteredCountries.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => Country(countries[index]),
+                      builder: (context) => Country(filteredCountries[index]),
                     ),
                   );
                 },
@@ -104,7 +108,7 @@ class _AllCountriesState extends State<AllCountries> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 8.0),
-                      child: Text(countries[index]["name"]),
+                      child: Text(filteredCountries[index]["name"]),
                     )),
               );
             }): Center(
