@@ -11,9 +11,10 @@ class AllCountries extends StatefulWidget {
 }
 
 class _AllCountriesState extends State<AllCountries> {
-  Future<List> countries;
+  List countries =[];
   bool isSearching = false;
-  Future<List> getCountries() async {
+
+  getCountries() async {
     var response = await Dio().get("https://restcountries.eu/rest/v2/all");
     // print(response.data.length);
     return response.data;
@@ -21,8 +22,16 @@ class _AllCountriesState extends State<AllCountries> {
 
   @override
   void initState() {
-    countries = getCountries();
+    getCountries().then((data){
+      setState(() {
+        countries = data;
+      });
+    });
     super.initState();
+  }
+
+  void _filterCountries(value){
+    print(value);
   }
 
   @override
@@ -43,6 +52,9 @@ class _AllCountriesState extends State<AllCountries> {
                 ),
               )
             : TextField(
+          onChanged: (value){
+            _filterCountries(value);
+          },
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             icon: Icon(
@@ -76,33 +88,27 @@ class _AllCountriesState extends State<AllCountries> {
       ),
       body: Container(
         padding: EdgeInsets.all(10),
-        child: FutureBuilder<List>(
-          future: countries,
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            if (snapshot.hasData) {
-              // print(snapshot.data);
-              return ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Country(snapshot.data[index]),
-                      ),
-                    );
-                  },
-                  child: Card(
-                      elevation: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 8.0),
-                        child: Text(snapshot.data[index]["name"]),
-                      )),
-                );
-              });
-            }
-            return null;
-          },
+        child: countries.length > 0 ? ListView.builder(
+          itemCount: countries.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Country(countries[index]),
+                    ),
+                  );
+                },
+                child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 8.0),
+                      child: Text(countries[index]["name"]),
+                    )),
+              );
+            }): Center(
+            child:CircularProgressIndicator()
         ),
       ),
     );
