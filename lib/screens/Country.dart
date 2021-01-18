@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:country_house/screens/CountryMap.dart';
 
 class Country extends StatelessWidget {
   final Map country;
@@ -69,12 +70,6 @@ class Country extends StatelessWidget {
                   color:Colors.cyan,
                 )
             ),
-
-            FlipCard(
-                direction: FlipDirection.VERTICAL,
-                front: CountryCard(title: 'Show on map'),
-                back: CountryDetailCard(title: 'Hello',)
-            ),
             FlipCard(
               direction: FlipDirection.VERTICAL,
               front: CountryCard(title: 'Flag'),
@@ -88,6 +83,16 @@ class Country extends StatelessWidget {
                     // ),
                 ),
               ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (ctx) => CountryMap(),
+                    ),
+                );
+              },
+                child: CountryCard(title: 'Show on map')
             ),
           ],
 
