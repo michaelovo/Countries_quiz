@@ -6,11 +6,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:country_house/screens/CountryMap.dart';
 
 class Country extends StatelessWidget {
-  final Map country;
-  Country(this.country);
+
+  static const routeName = '/country';
 
   @override
   Widget build(BuildContext context) {
+    final Map country = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
@@ -21,59 +23,62 @@ class Country extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
-        ) ,
+        ),
         centerTitle: true,
       ),
       body: Container(
         padding: EdgeInsets.all(10.0),
         child: GridView(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           children: <Widget>[
             FlipCard(
-              direction: FlipDirection.VERTICAL,
+                direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Capital'),
-                back: CountryDetailCard(title: country['capital'],
-                  color:Colors.deepOrange,
-                )
-            ),
+                back: CountryDetailCard(
+                  title: country['capital'],
+                  color: Colors.deepOrange,
+                )),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Population'),
-                back: CountryDetailCard(title: country['population'].toString(),
-                  color:Colors.deepPurple,)
-            ),
+                back: CountryDetailCard(
+                  title: country['population'].toString(),
+                  color: Colors.deepPurple,
+                )),
             FlipCard(
-                direction: FlipDirection.VERTICAL,
-                front: CountryCard(title: 'Calling Code'),
-                back: CountryDetailCard(title: country['callingCodes'].toString(),
-                  color: Colors.green,
-                ),
+              direction: FlipDirection.VERTICAL,
+              front: CountryCard(title: 'Calling Code'),
+              back: CountryDetailCard(
+                title: country['callingCodes'].toString(),
+                color: Colors.green,
+              ),
             ),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Currency'),
-                back: CountryDetailCard(title: country['currencies'][0]['name'],
-                  color:Colors.blue,
-                )
-            ),
+                back: CountryDetailCard(
+                  title: country['currencies'][0]['name'],
+                  color: Colors.blue,
+                )),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Region'),
-                back: CountryDetailCard(title: country['region'],
-                  color:Colors.red,
-                )
-            ),
+                back: CountryDetailCard(
+                  title: country['region'],
+                  color: Colors.red,
+                )),
             FlipCard(
                 direction: FlipDirection.VERTICAL,
                 front: CountryCard(title: 'Sub Region'),
-                back: CountryDetailCard(title: country['subregion'],
-                  color:Colors.cyan,
-                )
-            ),
+                back: CountryDetailCard(
+                  title: country['subregion'],
+                  color: Colors.cyan,
+                )),
             FlipCard(
               direction: FlipDirection.VERTICAL,
               front: CountryCard(title: 'Flag'),
-              back:Card(
+              back: Card(
                 color: Colors.white,
                 elevation: 10,
                 child: Center(
@@ -81,21 +86,19 @@ class Country extends StatelessWidget {
                     //     country['flag'],
                     //     width: 100,
                     // ),
-                ),
+                    ),
               ),
             ),
             GestureDetector(
-              onTap: (){
-                Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (ctx) => CountryMap(country['name'], country['latlng']),
-                    ),
-                );
-              },
-                child: CountryCard(title: 'Show on map')
-            ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(CountryMap.routeName,
+                      arguments: {
+                        'name': country['name'],
+                        'latlng': country['latlng']
+                      });
+                },
+                child: CountryCard(title: 'Show on map')),
           ],
-
         ),
       ),
     );
@@ -105,11 +108,7 @@ class Country extends StatelessWidget {
 class CountryDetailCard extends StatelessWidget {
   final String title;
   final MaterialColor color;
-  const CountryDetailCard({
-    Key key,
-    this.title,
-    this.color
-  }) : super(key: key);
+  const CountryDetailCard({Key key, this.title, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +119,10 @@ class CountryDetailCard extends StatelessWidget {
         child: Text(
           title,
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            letterSpacing: 1.0,
-            fontWeight: FontWeight.bold
-          ),
+              color: Colors.white,
+              fontSize: 18,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -141,17 +139,13 @@ class CountryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+        elevation: 10,
         child: Center(
           child: Text(
             title,
             style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.0
-            ),
+                fontSize: 20, fontWeight: FontWeight.bold, letterSpacing: 1.0),
           ),
-        )
-    );
+        ));
   }
 }

@@ -6,20 +6,21 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class CountryMap extends StatelessWidget {
   Completer<GoogleMapController> _controller = Completer();
 
-  final String name;
-  final List latlang;
-  CountryMap(this.name, this.latlang);
+  static const routeName ='/country-map';
+
 
   @override
   Widget build(BuildContext context) {
+    final Map country = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
-        title: Text('Country Name'),
+        title: Text(country['name']),
       ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
-          target: LatLng(37.42796133580664, -122.085749655962),
+          target: LatLng(country['latlng'][0], country['latlng'][1]),
           zoom: 6.01,
         ),
         onMapCreated: (GoogleMapController controller) {
